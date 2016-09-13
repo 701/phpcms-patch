@@ -142,6 +142,7 @@ class attachment {
 	 */
 	function download($field, $value,$watermark = '0',$ext = 'gif|jpg|jpeg|bmp|png', $absurl = '', $basehref = '')
 	{
+	    if(!in_array(strtoupper($ext),array('JPG','GIF','BMP','PNG','JPEG'))) exit('0');//漏洞: phpcms某处逻辑问题导致getshell - 701
 		global $image_d;
 		$this->att_db = pc_base::load_model('attachment_model');
 		$upload_url = pc_base::load_config('system','upload_url');
