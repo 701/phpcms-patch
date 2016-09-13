@@ -14,7 +14,7 @@ class down {
 		$a_k = sys_auth($a_k, 'DECODE', pc_base::load_config('system','auth_key'));
 		if(empty($a_k)) showmessage(L('illegal_parameters'));
 		unset($i,$m,$f);
-		parse_str($a_k);
+		$a_k = safe_replace($a_k); parse_str($a_k);//漏洞: phpcms前台注入导致任意文件读取漏洞 - 701
 		if(isset($i)) $i = $id = intval($i);
 		if(!isset($m)) showmessage(L('illegal_parameters'));
 		if(!isset($modelid)||!isset($catid)) showmessage(L('illegal_parameters'));
@@ -86,7 +86,7 @@ class down {
 		$a_k = sys_auth($a_k, 'DECODE', $pc_auth_key);
 		if(empty($a_k)) showmessage(L('illegal_parameters'));
 		unset($i,$m,$f,$t,$ip);
-		parse_str($a_k);		
+		$a_k = safe_replace($a_k); parse_str($a_k);		//phpcms前台注入导致任意文件读取漏洞
 		if(isset($i)) $downid = intval($i);
 		if(!isset($m)) showmessage(L('illegal_parameters'));
 		if(!isset($modelid)) showmessage(L('illegal_parameters'));
@@ -118,7 +118,7 @@ class down {
 				}
 				$ext = fileext($filename);
 				$filename = date('Ymd_his').random(3).'.'.$ext;
-				file_down($fileurl, $filename);
+				$fileurl = str_replace(array('<','>'), '',$fileurl); file_down($fileurl, $filename);
 			}
 		}
 	}
