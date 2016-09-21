@@ -10,11 +10,12 @@ class down {
 
 	public function init() {
 		$a_k = trim($_GET['a_k']);
+        $a_k = safe_replace($a_k);//phpcms前台注入导致任意文件读取漏洞
 		if(!isset($a_k)) showmessage(L('illegal_parameters'));
 		$a_k = sys_auth($a_k, 'DECODE', pc_base::load_config('system','auth_key'));
 		if(empty($a_k)) showmessage(L('illegal_parameters'));
 		unset($i,$m,$f);
-		$a_k = safe_replace($a_k); parse_str($a_k);//漏洞: phpcms前台注入导致任意文件读取漏洞 - 701
+		parse_str($a_k);
 		if(isset($i)) $i = $id = intval($i);
 		if(!isset($m)) showmessage(L('illegal_parameters'));
 		if(!isset($modelid)||!isset($catid)) showmessage(L('illegal_parameters'));
@@ -82,11 +83,12 @@ class down {
 	
 	public function download() {
 		$a_k = trim($_GET['a_k']);
+        $a_k = safe_replace($a_k);//phpcms前台注入导致任意文件读取漏洞
 		$pc_auth_key = md5(pc_base::load_config('system','auth_key').$_SERVER['HTTP_USER_AGENT'].'down');
 		$a_k = sys_auth($a_k, 'DECODE', $pc_auth_key);
 		if(empty($a_k)) showmessage(L('illegal_parameters'));
 		unset($i,$m,$f,$t,$ip);
-		$a_k = safe_replace($a_k); parse_str($a_k);		//phpcms前台注入导致任意文件读取漏洞
+		parse_str($a_k);
 		if(isset($i)) $downid = intval($i);
 		if(!isset($m)) showmessage(L('illegal_parameters'));
 		if(!isset($modelid)) showmessage(L('illegal_parameters'));
