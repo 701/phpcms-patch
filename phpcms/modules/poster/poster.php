@@ -218,7 +218,7 @@ class poster extends admin {
         	$where .= " AND `type`='".$_GET['click']."'";
         	
         	//如果设置了按地区或者按ip分类
-	        if ($_GET['group']) {
+	        if ($_GET['group']) { $_GET['group'] = preg_replace('#`#', '', $_GET['group']);
 	        	$group = " `".$_GET['group']."`";
 	        	$fields = "*, COUNT(".$_GET['group'].") AS num";
 	        	$order = " `num` DESC";
